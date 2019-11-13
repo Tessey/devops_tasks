@@ -1,0 +1,9 @@
+#!/bin/bash
+while true
+do
+        d=$(date)
+        numb=$(ps A | wc -l)
+        echo "$d" >> timer.txt
+        echo "$numb" >> timer.txt
+        sleep 60
+done
