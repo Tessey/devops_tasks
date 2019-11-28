@@ -6,3 +6,5 @@
    hosts.txt contain IP of client-instances.
    Playbook install apache,upload web page and start service.
 3. With "ansible-vault encrypt name_of_file" i encrypted my hosts.txt and /group_vars/server1.yml
+
+I choose apache instead nginx. I think it dosn`t matter which one to choose.
