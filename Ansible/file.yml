@@ -1,0 +1,45 @@
+---
+  - name: Install Jenkins
+    hosts: linux
+    gather_facts: false
+    become: true
+    tasks:
+      - name: Check Hostname
+        command: hostname
+        register: hname
+
+      - debug: msg="{{ hname.stdout }}"
+
+      - name: APT Update
+        command: apt update
+
+      - name: Install Java
+        command: apt install -y openjdk-8-jdk
+
+      - name: Import Jenkins Key
+        apt_key:
+             state: present
+             key: https://jenkins-ci.org/debian/jenkins-ci.org.key*
+
+      - name: Install Jenkins
+        apt:
+             name: jenkins
+             state: present
+
+      - name: Start & Enable Jenkins
+        systemd:
+              name: jenkins
+              state: started
+              enabled: true
+
+      - name: Sleep for 40 seconds and continue with play
+        wait_for: timeout=40
+
+      - name: Get init password Jenkins
+        shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+        changed_when: false
+        register: result
+
+      - name: Print init password Jenkins
+        debug:
+              var: result.stdout
