@@ -1,0 +1,73 @@
+---
+
+  - name: Update system
+    apt: update_cache=yes
+
+  - name: Downoload packages
+    apt:
+      pkg:
+      - ca-certificates
+      - openssh-server
+      - postfix
+
+  - name: Add the GitLab package repository
+    get_url:
+      url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+      dest: .
+      mode: '0755'
+
+  - name: Install the GitLab package
+    shell: ./script.deb.sh
+
+  - name: Install gitlab
+    apt:
+      name: gitlab-ee=12.10.2-ee.0 #1
+
+  - name: Remove default gitlab config
+    file:
+      path: /etc/gitlab/gitlab.rb
+      state: absent
+
+  - name: Install gitlab config
+    template:
+      src: gitlab.rb.j2
+      dest: /etc/gitlab/gitlab.rb
+
+  - name: Reconfigure GitLab
+    shell: gitlab-ctl reconfigure
+    
+  - name: Download bucket content
+    gc_storage:
+      bucket:        '{{ bucket_name }}'
+      object:        '{{ git_backup_name }}'
+      dest:          /home/{{ ansible_user }}/{{ gcloud_tar_name }}
+      gs_access_key: '{{ gcloud_access_key }}'
+      gs_secret_key: '{{ gcloud_secret_key }}'
+      mode:          get
+
+  - name: Move repository backup file
+    shell: mv /home/{{ ansible_user }}/{{ git_backup_name }} /var/opt/gitlab/backups/{{ git_backup_name }}
+
+  - name: Give file permissions to the necessary user
+    file:
+      path: /var/opt/gitlab/backups/{{ git_backup_name }}
+      owner: git
+      group: git
+
+  - name: Stop processes
+    command: "gitlab-ctl stop {{ item }}"
+    with_items:
+    - unicorn
+    - puma
+    - sidekiq
+
+  - name: Restore backup
+    command: "gitlab-backup restore BACKUP={{ git_backup_name }}"
+
+  - name: Reconfigure GitLab
+    shell: |
+     gitlab-ctl reconfigure
+     gitlab-ctl restart
+     gitlab-rake gitlab:check SANITIZE=true
+
+...

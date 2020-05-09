@@ -1,0 +1,8 @@
+external_url '{{ git_url }}'
+
+gitlab_rails['backup_upload_connection'] = {
+  'provider' => 'Google',
+  'google_storage_access_key_id' => '{{ gcloud_access_key }}',
+  'google_storage_secret_access_key' => '{{ gcloud_secret_key }}'
+}
+gitlab_rails['backup_upload_remote_directory'] = '{{ bucket_name }}'

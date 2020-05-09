@@ -1,0 +1,31 @@
+---
+  - name: APT Update
+    apt: update_cache=yes
+
+  - name: Downoload packages
+    apt:
+      pkg:
+      - ca-certificates
+      - apt-transport-https
+      - software-properties-common
+
+  - name: Install docker
+    apt:
+      name: docker.io
+
+  - name: Start & enable docker
+    systemd:
+      state: started
+      name: docker
+      enabled: yes
+
+  - name: Download docker-compose
+    shell: curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+  - name: Give executable permissions to the docker-compsoe binary
+    path: /usr/local/bin/docker-compose
+    owner: docker
+    group: docker
+    mode: '0711'
+    #shell: chmod +x /usr/local/bin/docker-compose
+...

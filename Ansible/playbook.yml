@@ -1,0 +1,21 @@
+---
+
+- hosts: Docker
+  become: true
+  gather_facts: no
+  roles:
+    - { role: docker_role}
+
+- hosts: Jenkins
+  become: true
+  gather_facts: no
+  roles:
+    - { role: jenkins_role}
+
+- hosts: GitLab
+  become: true
+  gather_facts: no
+  roles:
+    - { role: gitlab_role}
+
+...

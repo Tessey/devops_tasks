@@ -1,0 +1,45 @@
+---
+- hosts: Jenkins
+  become: true
+  gather_facts: no
+  tasks:
+
+    - name: Install python-boto
+      apt:
+        name: python-boto
+        state: latest
+
+    - name: "Create backup directory"
+      file:
+        path: /tmp/backup
+        state: directory
+        mode: '0755'
+
+    - name: "Upload backup script"
+      copy:
+        src: templates/jenkins-backup.sh
+        dest: /tmp/backup/jenkins-backup.sh
+        mode: '0755'
+
+    #почему тут дата, а указываешь ты лэйтест, как это работает
+    - shell: echo jenkins-backup-`date +"%Y%m%d%H%M%S"`.tar.gz
+      register: backup_file
+
+    - set_fact: backup_file="{{ backup_file.stdout }}"
+
+    - name: "Create backup file"
+      shell: /tmp/backup/jenkins-backup.sh /var/lib/jenkins /tmp/backup/{{ backup_file }}
+
+    - name: "Upload backup file to gcloud"
+      gc_storage:
+        bucket:        '{{ bucket_name }}'
+        object:        '{{ jenkins_backup_name }}'
+        src:          /tmp/backup/{{ backup_file }}
+        gs_access_key: '{{ gcloud_access_key }}'
+        gs_secret_key: '{{ gcloud_secret_key }}'
+        mode: put
+        permission: public-read
+
+    - name: "Remove backup file"
+      file: path=/tmp/backup/{{ jenkins_backup_name }} state=absent
+...

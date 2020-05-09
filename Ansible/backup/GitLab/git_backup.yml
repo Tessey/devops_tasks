@@ -1,0 +1,11 @@
+---
+    - name: Backing up GitLab
+      hosts: GitLab
+      gather_facts: false
+      become: true
+      tasks:
+        - name:
+          shell: |
+            sudo gitlab-ctl reconfigure
+            sudo gitlab-backup create BACKUP='backup'
+...
