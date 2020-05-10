@@ -5,8 +5,6 @@
 
   - debug: msg="{{ hname.stdout }}"
 
-  - name: Give ownership for Jenkins
-    shell: chown jenkins:jenkins /home/daniel_zaharchenk00/.ssh/petProj
 #install packages
   - name: APT Update
     apt: update_cache=yes
@@ -22,21 +20,28 @@
     shell: pip2 install -U boto
 
 #install Jenkins
-  - name: Import Jenkins Key
-    apt_key:
-      state: present
-      key: https://jenkins-ci.org/debian/jenkins-ci.org.key*
+  #- name: Import Jenkins Key
+  #  apt_key:
+  #    url: https://jenkins-ci.org/debian/jenkins-ci.org.key*
+  #    state: present
+  - name: Add jenkins keys and list
+    shell: |
+     wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+     sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9B7D32F2D50582E6
 
   - name: Install Jenkins
     apt:
-      name: jenkins
-      state: 2.222.3
+      name: jenkins=2.222.3
 
   - name: Start & Enable Jenkins
     systemd:
       name: jenkins
       state: started
       enabled: true
+
+  - name: Give ownership for Jenkins
+    shell: chown jenkins:jenkins /home/daniel_zaharchenk00/.ssh/petProj
 
   - name: Add user jenkins to docker group
     user:
@@ -85,5 +90,7 @@
      shell: /tmp/backup/jenkins-restore.sh /var/lib/jenkins /tmp/backup/{{ jenkins_backup_name }}
 
   - name: Restore ownership
-    shell: chown jenkins.jenkins -R /var/lib/jenkins
+    shell: chown jenkins:jenkins -R /var/lib/jenkins
+
+  - command: cat /var/lib/jenkins/secrets/initialAdminPassword
 ...

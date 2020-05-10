@@ -1,8 +1,9 @@
 ---
-ansible_user                 : daniel.zaharchenk00
-ansible_ssh_private_key_file : /home/daniel.zaharchenk00/.ssh/petProj
+ansible_user                 : daniel_zaharchenk00
+ansible_ssh_private_key_file : /home/daniel_zaharchenk00/.ssh/petProj
 bucket_name                  : test_danylo_bucket
 git_backup_name              : backup_gitlab_backup.tar
+git_backup                   : backup
 jenkins_backup_name          : jenkins-backup-latest.tar.gz
 
 gcloud_access_key : !vault |

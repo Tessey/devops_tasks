@@ -1,11 +1,11 @@
 [Jenkins]
-JenkinsServer ansible_host=34.89.128.46
+JenkinsServer ansible_host=34.107.9.190
 
 [GitLab]
 GitLabServer ansible_host=35.234.64.2
 
 [Web]
-WebServer ansible_host=34.89.221.181
+WebServer ansible_host=34.89.128.46
 
 [Docker:children]
 Jenkins
