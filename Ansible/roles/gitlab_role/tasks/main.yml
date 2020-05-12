@@ -12,7 +12,7 @@
       - python-pip
 
   - name: Upgrade boto
-    shell: pip install boto --upgrade
+    shell: pip install boto==2.9 --upgrade
 
   - name: Add the GitLab package repository
     get_url:
