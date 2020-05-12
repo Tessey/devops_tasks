@@ -17,7 +17,7 @@
       - python-pip
 
   - name: Upgrade boto
-    shell: pip2 install -U boto
+    shell: pip install boto --upgrade
 
 #install Jenkins
   - name: Add jenkins keys and list
