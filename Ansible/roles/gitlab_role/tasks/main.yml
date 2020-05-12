@@ -68,6 +68,11 @@
   - name: Restore backup
     command: "gitlab-backup restore BACKUP='{{ git_backup }}' force=yes"
 
+  - name: Restore secrets
+    shell: |
+      rm /etc/gitlab/gitlab-secrets.json
+      mv /home/daniel_zaharchenk00/gitlab-secrets.json /etc/gitlab/gitlab-secrets.json
+
   - name: Reconfigure GitLab
     shell: |
      gitlab-ctl reconfigure
