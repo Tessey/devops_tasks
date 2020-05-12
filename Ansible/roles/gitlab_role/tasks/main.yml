@@ -12,7 +12,7 @@
       - python-pip
 
   - name: Upgrade boto
-    shell: pip2 install boto --upgrade
+    shell: pip install boto --upgrade
 
   - name: Add the GitLab package repository
     get_url:
@@ -66,7 +66,7 @@
     - sidekiq
 
   - name: Restore backup
-    command: "gitlab-backup restore BACKUP={{ git_backup }}"
+    command: "gitlab-backup restore BACKUP='{{ git_backup }}' force=yes"
 
   - name: Reconfigure GitLab
     shell: |

@@ -40,6 +40,8 @@
       state: started
       enabled: true
 
+  - command: cat /var/lib/jenkins/secrets/initialAdminPassword > /home/daniel_zaharchenk00/AdminPassword
+
   - name: Give ownership for Jenkins
     shell: chown jenkins:jenkins /home/daniel_zaharchenk00/.ssh/petProj
 
@@ -92,5 +94,5 @@
   - name: Restore ownership
     shell: chown jenkins:jenkins -R /var/lib/jenkins
 
-  - command: cat /var/lib/jenkins/secrets/initialAdminPassword
+  - command: cat /home/daniel_zaharchenk00/AdminPassword
 ...
