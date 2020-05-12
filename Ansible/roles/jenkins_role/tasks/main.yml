@@ -20,15 +20,14 @@
     shell: pip2 install -U boto
 
 #install Jenkins
-  #- name: Import Jenkins Key
-  #  apt_key:
-  #    url: https://jenkins-ci.org/debian/jenkins-ci.org.key*
-  #    state: present
   - name: Add jenkins keys and list
     shell: |
      wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
      sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
      apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9B7D32F2D50582E6
+
+  - name: Update system
+    apt: update_cache=yes
 
   - name: Install Jenkins
     apt:
@@ -39,8 +38,6 @@
       name: jenkins
       state: started
       enabled: true
-
-  - command: cat /var/lib/jenkins/secrets/initialAdminPassword > /home/daniel_zaharchenk00/AdminPassword
 
   - name: Give ownership for Jenkins
     shell: chown jenkins:jenkins /home/daniel_zaharchenk00/.ssh/petProj
@@ -93,6 +90,4 @@
 
   - name: Restore ownership
     shell: chown jenkins:jenkins -R /var/lib/jenkins
-
-  - command: cat /home/daniel_zaharchenk00/AdminPassword
 ...

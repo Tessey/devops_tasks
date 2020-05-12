@@ -37,9 +37,6 @@
       src: gitlab.rb.j2
       dest: /etc/gitlab/gitlab.rb
 
-  - name: Reconfigure GitLab
-    shell: gitlab-ctl reconfigure
-
   - name: Download bucket content
     gc_storage:
       bucket:        '{{ bucket_name }}'
@@ -73,5 +70,4 @@
      gitlab-ctl reconfigure
      gitlab-ctl restart
      gitlab-rake gitlab:check SANITIZE=true
-
 ...
