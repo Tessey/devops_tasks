@@ -1,7 +1,7 @@
 ---
 ansible_user                 : daniel_zaharchenk00
 ansible_ssh_private_key_file : /home/daniel_zaharchenk00/.ssh/petProj
-ansible_python_interpreter   : /usr/bin/python
+ansible_python_interpreter   : /usr/bin/python2.7
 
 bucket_name                  : test_danylo_bucket
 git_backup_name              : backup_gitlab_backup.tar
