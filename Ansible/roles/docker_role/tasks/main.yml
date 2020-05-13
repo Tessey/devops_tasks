@@ -22,6 +22,11 @@
   - name: Download docker-compose
     shell: curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-
+  - name: Give executable permissions to the docker-compsoe binary
+    file:
+      path: /usr/local/bin/docker-compose
+      owner: daniel_zaharchenk00
+      group: daniel_zaharchenk00
+      mode: '+x'
     #shell: chmod +x /usr/local/bin/docker-compose
 ...

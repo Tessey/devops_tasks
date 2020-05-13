@@ -90,4 +90,16 @@
       cp /home/daniel_zaharchenk00/.ssh/petProj /var/lib/jenkins/petProj
       mv /home/daniel_zaharchenk00/.ssh/account.json /var/lib/jenkins/account.json
       chown jenkins:jenkins -R /var/lib/jenkins
+
+  - name: Give permissions
+    file:
+      path: /var/lib/jenkins/petProj
+      mode: '0400'
+
+  - name: Restart Jenkins
+    systemd:
+      name: jenkins
+      state: restarted
+      enabled: true
+
 ...
