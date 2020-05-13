@@ -17,7 +17,7 @@
 
     - name: "Upload backup script"
       copy:
-        src: templates/jenkins-backup.sh
+        src: jenkins-backup.sh
         dest: /tmp/backup/jenkins-backup.sh
         mode: '0755'
 

@@ -39,9 +39,6 @@
       state: started
       enabled: true
 
-  - name: Give ownership for Jenkins
-    shell: chown jenkins:jenkins /home/daniel_zaharchenk00/.ssh/petProj
-
   - name: Add user jenkins to docker group
     user:
       name: jenkins
@@ -89,5 +86,8 @@
      shell: /tmp/backup/jenkins-restore.sh /var/lib/jenkins /tmp/backup/{{ jenkins_backup_name }}
 
   - name: Restore ownership
-    shell: chown jenkins:jenkins -R /var/lib/jenkins
+    shell: |
+      mv /petProj /var/lib/jenkins/petProj
+      mv /account.json /var/lib/jenkins/account.json
+      chown jenkins:jenkins -R /var/lib/jenkins
 ...
