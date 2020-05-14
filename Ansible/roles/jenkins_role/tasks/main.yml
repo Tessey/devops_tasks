@@ -106,6 +106,7 @@
     shell: |
       which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
       eval $(ssh-agent -s)
+      mkdir -p /var/lib/jenkins/.ssh
       ssh-keyscan 34.89.128.46 >> /var/lib/jenkins/.ssh/known_hosts
       chmod 644 /var/lib/jenkins/.ssh/known_hosts
 
