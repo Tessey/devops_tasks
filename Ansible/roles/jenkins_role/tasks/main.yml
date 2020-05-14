@@ -102,4 +102,11 @@
       state: restarted
       enabled: true
 
+  - name: Add fingerprint
+    shell: |
+      which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+      eval $(ssh-agent -s)
+      ssh-keyscan 34.89.128.46 >> ~/.ssh/known_hosts
+      chmod 644 ~/.ssh/known_hosts
+
 ...
