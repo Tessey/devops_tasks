@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+  ng:
+    image: "eu.gcr.io/mydemoproject-275918/ubuntu-nginx:latest"
+    ports:
+      - "80:80"
